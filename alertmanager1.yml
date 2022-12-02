@@ -1,0 +1,39 @@
+global:
+  smtp_smarthost: 'localhost:25'
+  smtp_from: 'alertmanager@promethus.com'
+  smtp_auth_username: '' 
+  smtp_auth_password: ''
+  smtp_require_tls: false
+
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+
+  receiver: Support
+
+  routes:
+    - matchers:
+        - severity="Warning"
+      receiver: L1Support
+  
+      routes:
+    - matchers:
+        - severity="Critical"
+      receiver: L3Support
+
+receivers:
+    - name: 'L1Support'
+      slack_configs:
+        - api_url: https://hooks.slack.com/services/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
+          channel: '#prometheus_group12_l1_alert'
+          send_resolved: true
+
+    - name: 'L3Support'
+      slack_configs:
+        - api_url: https://hooks.slack.com/services/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
+          channel: '#prometheus_group12_l3_alert'
+          send_resolved: true
+
+    - name: 'Support'
