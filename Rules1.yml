@@ -1,0 +1,25 @@
+groups:
+
+- name: CPU-usage_L1
+  rules:
+  - alert: 'CPU usage >30'
+    expr: (100 - avg(irate(windows_cpu_time_total{job=~"WMIexporter",instance=~"127.0.0.1:9182",mode="idle"}[5m]))*100 )> 30
+    for : 1m
+    labels:
+      severity: 'Warning'
+      service: CPU-usage_L1
+    annotations:
+      title: "CPU Usage"
+      summary: "CPU usage is high please clear temp"
+
+- name: High CPU usage_L3
+  rules:
+  - alert: 'CPU usage >50'
+    expr: (100 - avg(irate(windows_cpu_time_total{job=~"WMIexporter",instance=~"127.0.0.1:9182",mode="idle"}[5m]))*100 )> 50
+    for : 1m
+    labels:
+      severity: 'Critical'
+      service: CPU-usage_L3
+    annotations:
+      title: "CPU Usage"
+      summary: "CPU usage is high please clear temp. "
