@@ -1,0 +1,61 @@
+groups:
+
+- name: Host_CPU_usage_L1
+  rules:
+  - alert: 'Host CPU Usage > 30%'
+    expr: (100 - avg(irate(windows_cpu_time_total{job=~"windows",instance=~"127.0.0.1:9182",mode="idle"}[5m]))*100 )> 30
+    for : 10s
+    labels:
+      severity: 'Host_CPU_Warning'
+      service: Host_CPU_usage_L1
+    annotations:
+      title: "Host_usage > 30%"
+      summary: "Host CPU usage is in Warning State!"
+
+- name: Host_CPU_usage_L3
+  rules:
+  - alert: 'Host CPU Usage > 50%'
+    expr: (100 - avg(irate(windows_cpu_time_total{job=~"windows",instance=~"127.0.0.1:9182",mode="idle"}[5m]))*100 )> 50
+    for : 10s
+    labels:
+      severity: 'Host_CPU_Critical'
+      service: Host_CPU_usage_L3
+    annotations:
+      title: "Host_usage > 50%"
+      summary: "Host CPU usage is in Critical State!"
+
+- name: VM_CPU usage_L1
+  rules:
+  - alert: 'VM CPU Usage > 20%'
+    expr: avg(vm_cpu_usage{instance=~"127.0.0.1:8011",job=~"vmserver_metrics"}) > 20
+    for : 10s
+    labels:
+      severity: 'VM_CPU_Warning'
+      service: VM_CPU_usage_L1
+    annotations:
+      title: "vm_cpu_usage > 20%"
+      summary: "VM CPU usage is in Warning State!"
+
+- name: VM_CPU_usage_L3
+  rules:
+  - alert: 'VM CPU Usage > 30%'
+    expr: avg(vm_cpu_usage{instance=~"127.0.0.1:8011",job=~"vmserver_metrics"}) > 30
+    for : 10s
+    labels:
+      severity: 'VM_CPU_Critical'
+      service: VM_CPU_usage_L3
+    annotations:
+      title: "vm_cpu_usage > 30%"
+      summary: "VM CPU usage is in Critical State!"
+
+- name: CPU Down
+  rules:
+  - alert: 'CPU Down'
+    expr: (Server_Status{job=~"vmserver_metrics",instance=~"127.0.0.1:8011"})== 0
+    for : 10s
+    labels:
+      severity: 'VM_Down'
+      service: VM_Down
+    annotations:
+      title: "MouliUbuntu VM Down"
+      summary: "MouliUbuntu VM Down"

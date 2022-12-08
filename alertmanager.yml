@@ -1,0 +1,72 @@
+global:
+  smtp_smarthost: 'localhost:25'
+  smtp_from: 'alertmanager@promethus.com'
+  smtp_auth_username: '' 
+  smtp_auth_password: ''
+  smtp_require_tls: false
+  
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1m
+
+  receiver: Support
+
+  routes:
+    - matchers:
+        - severity="Host_CPU_Warning"
+      receiver: Host_L1_Support
+
+      routes:
+    - matchers:
+        - severity="Host_CPU_Critical"
+      receiver: Host_L3_Support
+
+      routes:
+    - matchers:
+        - severity="VM_Down"
+      receiver: VM_Critical
+      
+      routes:
+    - matchers:
+        - severity="VM_CPU_Warning"
+      receiver: VM_CPU_Warning_1
+
+      routes:
+    - matchers:
+        - severity="VM_CPU_Critical"
+      receiver: VM_CPU_Critical_1
+
+receivers:
+    - name: 'Host_L1_Support'
+      slack_configs:
+        - api_url: https://hooks.slack.com/services/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
+          channel: '#proactiveus-team-prometheus-alerts'
+          send_resolved: true
+
+    - name: 'Host_L3_Support'
+      slack_configs:
+        - api_url: https://hooks.slack.com/services/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
+          channel: '#proactiveus-team-prometheus-alerts'
+          send_resolved: true
+
+    - name: 'VM_Critical'
+      slack_configs:
+        - api_url: https://hooks.slack.com/services/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
+          channel: '#proactiveus-team-prometheus-alerts'
+          send_resolved: true
+    
+    - name: 'VM_CPU_Warning_1'
+      slack_configs:
+        - api_url: https://hooks.slack.com/services/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
+          channel: '#proactiveus-team-prometheus-alerts'
+          send_resolved: true
+
+    - name: 'VM_CPU_Critical_1'
+      slack_configs:
+        - api_url: https://hooks.slack.com/services/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
+          channel: '#proactiveus-team-prometheus-alerts'
+          send_resolved: true
+
+    - name: 'Support'
