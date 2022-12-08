@@ -20,6 +20,6 @@ Steps to Run:
 4. Verify whether the metrics are capturing by using 'vboxmanage metrics query MouliUbuntu CPU/Load/User:avg' command.
 5. use 'python Serverup_CpuUsage.py' command to start the python custom exporter server.
 
-Verify Prometheus Graph for Server_Up Metric.
-Verify Promethues Alerts if 5 alerts are showing.
-Verify Alert manager if any of the alerts are fired (Happens only when the rules in 'rules.yml' file are met)
+-> Verify Prometheus Graph for Server_Up Metric. \n
+-> Verify Promethues Alerts if 5 alerts are showing. \n
+-> Verify Alert manager if any of the alerts are fired (Happens only when the rules in 'rules.yml' file are met) \n
